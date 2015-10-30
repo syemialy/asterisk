@@ -17607,8 +17607,8 @@ static enum sip_get_dest_result get_destination(struct sip_pvt *p, struct sip_re
 	tmpf = ast_strdup(sip_get_header(req, "From"));
 	if (!ast_strlen_zero(tmpf)) {
 		from = get_in_brackets(tmpf);
-		if (parse_uri_legacy_check(from, "sip:,sips:", &from, NULL, &domain, NULL)) {
-			ast_log(LOG_WARNING, "Not a SIP header (%s)?\n", from);
+		if (parse_uri_legacy_check(from, "sip:,sips:,tel:", &from, NULL, &domain, NULL)) {
+			ast_log(LOG_WARNING, "Not a SIP or TEL header (%s)?\n", from);
 			return SIP_GET_DEST_INVALID_URI;
 		}
 
@@ -18488,8 +18488,8 @@ static enum check_auth_result check_user_full(struct sip_pvt *p, struct sip_requ
 	/* save the URI part of the From header */
 	ast_string_field_set(p, from, of);
 
-	if (parse_uri_legacy_check(of, "sip:,sips:", &name, &unused_password, &domain, NULL)) {
-		ast_log(LOG_NOTICE, "From address missing 'sip:', using it anyway\n");
+	if (parse_uri_legacy_check(of, "sip:,sips:,tel:", &name, &unused_password, &domain, NULL)) {
+		ast_log(LOG_NOTICE, "From address missing 'sip(s): or tel:', using it anyway\n");
 	}
 
 	SIP_PEDANTIC_DECODE(name);

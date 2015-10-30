@@ -100,6 +100,11 @@ int parse_uri_full(char *uri, const char *scheme, char **user, char **pass,
 			dom = c;
 			userinfo = uri;
 			uri = c; /* userinfo can contain ? and ; chars so step forward before looking for params and headers */
+		} else if ( (c = strstr(uri, ";phone-context=")) ) { /* TEL URI INVITE */
+			*c = '\0';
+			dom = c + 15;
+			userinfo = uri;
+			uri = dom;
 		} else {
 			/* domain-only URI, according to the SIP RFC. */
 			dom = uri;
